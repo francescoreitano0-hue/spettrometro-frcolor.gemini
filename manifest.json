@@ -1,11 +1,15 @@
 {
-  "name": "Irina Spectrometer",
-  "short_name": "RAL Finder",
+  "name": "FR COLOR Spettrometro",
+  "short_name": "FR COLOR",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1a1a1a",
+  "background_color": "#121212",
+  "theme_color": "#e67e22",
   "icons": [
-    { "src": "assets/logo.png", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "assets/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
   ]
 }

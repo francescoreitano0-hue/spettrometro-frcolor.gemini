@@ -1,8 +1,14 @@
-body { font-family: sans-serif; background: #1a1a1a; color: white; margin: 0; text-align: center; }
-.container { padding: 20px; max-width: 600px; margin: auto; }
-.btn-main { background: #e67e22; padding: 15px 25px; border-radius: 50px; cursor: pointer; display: inline-block; font-weight: bold; margin-bottom: 20px; }
+
+:root { --accent: #e67e22; --dark: #1a1a1a; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; margin: 0; text-align: center; }
+.container { padding: 15px; max-width: 800px; margin: auto; }
+.main-logo { width: 100%; max-width: 300px; height: auto; margin-bottom: 10px; }
+.btn-main { background: var(--accent); padding: 16px 30px; border-radius: 12px; cursor: pointer; display: inline-block; font-weight: bold; margin: 15px 0; border: none; color: white; transition: 0.3s; }
+.btn-main:active { transform: scale(0.95); }
 input[type="file"] { display: none; }
-canvas { width: 100%; border-radius: 10px; cursor: crosshair; margin-top: 10px; background: #333; }
-.results-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
-.ral-card { background: #333; padding: 10px; border-radius: 8px; font-size: 0.8em; border: 1px solid #444; }
-.color-swatch { height: 50px; border-radius: 4px; margin-bottom: 5px; border: 1px solid #000; }
+#canvas-container { width: 100%; border-radius: 15px; overflow: hidden; background: #222; border: 2px solid #333; }
+canvas { width: 100%; height: auto; cursor: crosshair; }
+.results-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 25px; }
+.ral-card { background: white; color: #333; padding: 10px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.color-swatch { height: 45px; border-radius: 6px; margin-bottom: 6px; border: 1px solid #ddd; }
+#hint { color: #aaa; font-size: 0.9rem; margin-bottom: 5px; }

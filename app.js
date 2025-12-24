@@ -11,12 +11,16 @@ const RAL_DB = [
     {n:"RAL 9001", h:"#FDF4E3"}, {n:"RAL 9002", h:"#E7EBDA"}, {n:"RAL 9003", h:"#F4F4F4"}, {n:"RAL 9004", h:"#282828"}, {n:"RAL 9005", h:"#0A0A0A"}, {n:"RAL 9006", h:"#A5A5A5"}, {n:"RAL 9007", h:"#8F8F8F"}, {n:"RAL 9010", h:"#F1F0E8"}, {n:"RAL 9011", h:"#1C1C1C"}, {n:"RAL 9016", h:"#F6F6F6"}, {n:"RAL 9017", h:"#1E1E1E"}, {n:"RAL 9018", h:"#D7D7D7"}
 ];
 
+
+
 const canvas = document.getElementById('imageCanvas');
 const ctx = canvas.getContext('2d');
-const loader = document.getElementById('imageLoader');
+const cameraInput = document.getElementById('cameraInput');
+const galleryInput = document.getElementById('galleryInput');
 const clearBtn = document.getElementById('clearBtn');
 
-loader.onchange = (e) => {
+// Funzione unica per gestire l'immagine, sia da camera che da galleria
+function handleImage(e) {
     const file = e.target.files[0];
     if(!file) return;
     const reader = new FileReader();
@@ -26,46 +30,23 @@ loader.onchange = (e) => {
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
-            document.getElementById('hint').innerText = "MIRA IL PUNTO E TOCCA";
+            document.getElementById('hint').innerText = "TOCCA IL MURO NELLA FOTO";
         };
         img.src = ev.target.result;
     };
     reader.readAsDataURL(file);
-};
+}
+
+// Colleghiamo i due nuovi tasti
+cameraInput.onchange = handleImage;
+galleryInput.onchange = handleImage;
 
 clearBtn.onclick = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById('results').innerHTML = "";
-    document.getElementById('hint').innerText = "Scatta o carica una foto UHD per iniziare";
+    document.getElementById('hint').innerText = "Scatta o carica una foto UHD";
+    cameraInput.value = "";
+    galleryInput.value = "";
 };
 
-canvas.addEventListener('click', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-    const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-    const p = ctx.getImageData(x - 7, y - 7, 15, 15).data;
-    let r=0, g=0, b=0, count=0;
-    for(let i=0; i < p.length; i += 4){ r += p[i]; g += p[i+1]; b += p[i+2]; count++; }
-    analyze(Math.round(r/count), Math.round(g/count), Math.round(b/count));
-});
-
-function analyze(r, g, b) {
-    const matches = RAL_DB.map(c => {
-        const t = hexToRgb(c.h);
-        const dist = Math.sqrt(Math.pow((r-t.r)*0.3,2)+Math.pow((g-t.g)*0.59,2)+Math.pow((b-t.b)*0.11,2));
-        return { ...c, dist };
-    }).sort((a,b) => a.dist - b.dist).slice(0, 3);
-
-    document.getElementById('results').innerHTML = matches.map(m => `
-        <div class="ral-card">
-            <div class="color-swatch" style="background:${m.h}"></div>
-            <strong style="font-size:12px; display:block;">${m.n}</strong>
-            <small>Match: ${Math.max(0, Math.round(100 - m.dist/2.5))}%</small>
-        </div>
-    `).join('');
-}
-
-function hexToRgb(h) {
-    const res = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h);
-    return res ? {r:parseInt(res[1],16), g:parseInt(res[2],16), b:parseInt(res[3],16)} : null;
-}
+// ... (tieni il resto del codice per il click sul canvas e la funzione analyze) ...

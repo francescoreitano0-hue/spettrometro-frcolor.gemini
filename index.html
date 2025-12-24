@@ -10,13 +10,17 @@
     <div class="container">
         <header>
             <img src="assets/logo.png" alt="FR COLOR Logo" class="main-logo">
-            <p id="hint">Scatta o carica una foto UHD per iniziare</p>
+            <p id="hint">Scegli come acquisire il colore</p>
         </header>
 
         <section class="upload-section">
-            <label for="imageLoader" class="btn-main">📷 AZIONE FOTO / CARICA</label>
-            <input type="file" id="imageLoader" accept="image/*">
-            <button id="clearBtn" class="btn-secondary">🔄 NUOVA FOTO</button>
+            <label for="cameraInput" class="btn-main">📸 SCATTA FOTO</label>
+            <input type="file" id="cameraInput" accept="image/*" capture="environment">
+
+            <label for="galleryInput" class="btn-secondary">🖼️ CARICA GALLERIA</label>
+            <input type="file" id="galleryInput" accept="image/*">
+            
+            <button id="clearBtn" class="btn-reset">🔄 RESET SCHERMO</button>
         </section>
 
         <main>

@@ -2,32 +2,26 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spettrometro RAL Professionale</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
-    <title>Spettrometro RAL - Irina</title>
 </head>
 <body>
-    <div id="app-card">
+    <div class="container">
         <header>
-            <h1>SPETTROMETRO DIGITALE</h1>
-            <span class="status-badge">Professional Mode</span>
+            <h1>SPETTROMETRO FRCOLOR</h1>
+            <p id="hint">Scatta una foto per iniziare</p>
         </header>
 
         <section class="upload-section">
-            <label for="imageLoader" class="btn-main">📷 CARICA FOTO CANTIERE</label>
-            <input type="file" id="imageLoader" accept="image/*">
+            <label for="imageLoader" class="btn-main">📷 SCATTA FOTO O CARICA</label>
+            <input type="file" id="imageLoader" accept="image/*" capture="environment">
         </section>
 
-        <section id="canvas-wrapper">
+        <main>
             <canvas id="imageCanvas"></canvas>
-            <p id="hint">Tocca la parete per analizzare</p>
-        </section>
-
-        <section class="results-container">
-            <h3>SOSPETTATI RAL (TOP 3)</h3>
-            <div id="results"></div>
-        </section>
+            <div id="results" class="results-grid"></div>
+        </main>
     </div>
     <script src="app.js"></script>
 </body>

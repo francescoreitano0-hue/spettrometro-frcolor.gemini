@@ -2,24 +2,26 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spettrometro RAL Professionale</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FR COLOR - Spettrometro UHD</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>SPETTROMETRO FRCOLOR</h1>
-            <p id="hint">Scatta una foto per iniziare</p>
+            <img src="assets/logo.png" alt="FR COLOR Logo" class="main-logo">
+            <p id="hint">Scatta o carica una foto UHD per iniziare</p>
         </header>
 
         <section class="upload-section">
-            <label for="imageLoader" class="btn-main">📷 SCATTA FOTO O CARICA</label>
-            <input type="file" id="imageLoader" accept="image/*" capture="environment">
+            <label for="imageLoader" class="btn-main">📷 AZIONE FOTO / CARICA</label>
+            <input type="file" id="imageLoader" accept="image/*">
         </section>
 
         <main>
-            <canvas id="imageCanvas"></canvas>
+            <div id="canvas-container">
+                <canvas id="imageCanvas"></canvas>
+            </div>
             <div id="results" class="results-grid"></div>
         </main>
     </div>

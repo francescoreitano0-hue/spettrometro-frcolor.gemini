@@ -1,4 +1,3 @@
-// DATABASE INTEGRALE RAL CLASSIC (213 COLORI)
 const RAL_DB = [
     {n:"RAL 1000", h:"#BEBD7F"}, {n:"RAL 1001", h:"#C2B078"}, {n:"RAL 1002", h:"#C6A664"}, {n:"RAL 1003", h:"#E5BE01"}, {n:"RAL 1004", h:"#CDA434"}, {n:"RAL 1005", h:"#A98307"}, {n:"RAL 1006", h:"#E4A010"}, {n:"RAL 1007", h:"#DC9206"}, {n:"RAL 1011", h:"#8A6642"}, {n:"RAL 1012", h:"#C7B446"}, {n:"RAL 1013", h:"#EAE6D1"}, {n:"RAL 1014", h:"#D1BC8A"}, {n:"RAL 1015", h:"#E6D6B0"}, {n:"RAL 1016", h:"#F1DD38"}, {n:"RAL 1017", h:"#F6B458"}, {n:"RAL 1018", h:"#F8F32B"}, {n:"RAL 1019", h:"#A48F7A"}, {n:"RAL 1020", h:"#968964"}, {n:"RAL 1021", h:"#F2AD00"}, {n:"RAL 1023", h:"#F7B500"}, {n:"RAL 1024", h:"#A58454"}, {n:"RAL 1027", h:"#826C34"}, {n:"RAL 1028", h:"#FF9900"}, {n:"RAL 1032", h:"#C49102"}, {n:"RAL 1033", h:"#E68E11"}, {n:"RAL 1034", h:"#EBA060"}, {n:"RAL 1037", h:"#F39B1B"},
     {n:"RAL 2000", h:"#DA6E00"}, {n:"RAL 2001", h:"#BC4E11"}, {n:"RAL 2002", h:"#B83C1C"}, {n:"RAL 2003", h:"#F67828"}, {n:"RAL 2004", h:"#E75B12"}, {n:"RAL 2008", h:"#F3752C"}, {n:"RAL 2009", h:"#E15501"}, {n:"RAL 2010", h:"#D4652F"}, {n:"RAL 2011", h:"#EC7C25"}, {n:"RAL 2012", h:"#E55137"},
@@ -17,7 +16,6 @@ const cameraInput = document.getElementById('cameraInput');
 const galleryInput = document.getElementById('galleryInput');
 const clearBtn = document.getElementById('clearBtn');
 
-// Gestione immagini UHD
 function handleImage(e) {
     const file = e.target.files[0];
     if(!file) return;
@@ -28,49 +26,43 @@ function handleImage(e) {
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
-            document.getElementById('hint').innerText = "TOCCA IL PUNTO NELLA FOTO";
+            document.getElementById('hint').innerText = "TOCCA IL MURO NELLA FOTO";
         };
         img.src = ev.target.result;
     };
     reader.readAsDataURL(file);
 }
 
-// Collegamento tasti separati
 cameraInput.onchange = handleImage;
 galleryInput.onchange = handleImage;
 
 clearBtn.onclick = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById('results').innerHTML = "";
-    document.getElementById('hint').innerText = "Scatta o carica una foto UHD";
-    cameraInput.value = "";
-    galleryInput.value = "";
+    document.getElementById('hint').innerText = "Scegli come acquisire il colore";
 };
 
-// Logica di tocco e analisi
 canvas.addEventListener('click', (e) => {
     const rect = canvas.getBoundingClientRect();
     const x = (e.clientX - rect.left) * (canvas.width / rect.width);
     const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-    
-    // Media 15x15 pixel per stabilizzare rumore UHD
-    const p = ctx.getImageData(x-7, y-7, 15, 15).data;
-    let r=0, g=0, b=0, c=0;
-    for(let i=0; i<p.length; i+=4){ r+=p[i]; g+=p[i+1]; b+=p[i+2]; c++; }
-    analyze(Math.round(r/c), Math.round(g/c), Math.round(b/c));
+    const p = ctx.getImageData(x - 7, y - 7, 15, 15).data; // Campione UHD 15x15
+    let r=0, g=0, b=0, count=0;
+    for(let i=0; i < p.length; i += 4){ r += p[i]; g += p[i+1]; b += p[i+2]; count++; }
+    analyze(Math.round(r/count), Math.round(g/count), Math.round(b/count));
 });
 
 function analyze(r, g, b) {
-    const results = RAL_DB.map(c => {
+    const matches = RAL_DB.map(c => {
         const t = hexToRgb(c.h);
-        const d = Math.sqrt(Math.pow((r-t.r)*0.3,2)+Math.pow((g-t.g)*0.59,2)+Math.pow((b-t.b)*0.11,2));
-        return { ...c, dist: d };
+        const dist = Math.sqrt(Math.pow((r-t.r)*0.3,2)+Math.pow((g-t.g)*0.59,2)+Math.pow((b-t.b)*0.11,2));
+        return { ...c, dist };
     }).sort((a,b) => a.dist - b.dist).slice(0, 3);
 
-    document.getElementById('results').innerHTML = results.map(m => `
+    document.getElementById('results').innerHTML = matches.map(m => `
         <div class="ral-card">
             <div class="color-swatch" style="background:${m.h}"></div>
-            <strong style="font-size:12px">${m.n}</strong><br>
+            <strong>${m.n}</strong><br>
             <small>Match: ${Math.max(0, Math.round(100 - m.dist/2.5))}%</small>
         </div>
     `).join('');
